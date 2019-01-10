@@ -1,0 +1,7 @@
+set(_CATKIN_CURRENT_PACKAGE "system3d")
+set(system3d_MAINTAINER "Pedro Salgado <salgadobb@hotmail.com>")
+set(system3d_DEPRECATED "")
+set(system3d_VERSION "0.0.0")
+set(system3d_BUILD_DEPENDS "beginner_tutorials" "dynamixel_controllers" "dynamixel_driver" "dynamixel_msgs" "my_dynamixel_tutorial" "pcl_ros" "roscpp" "rospy" "std_msgs")
+set(system3d_RUN_DEPENDS "beginner_tutorials" "dynamixel_controllers" "dynamixel_driver" "dynamixel_msgs" "my_dynamixel_tutorial" "pcl_ros" "roscpp" "rospy" "std_msgs")
+set(system3d_BUILDTOOL_DEPENDS "catkin")

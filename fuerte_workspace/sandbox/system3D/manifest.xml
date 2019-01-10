@@ -1,0 +1,23 @@
+<package>
+  <description brief="system3D">
+
+     system3D
+
+  </description>
+  <author>Salgado</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/system3D</url>
+  <depend package="my_dynamixel_tutorial"/>
+  <depend package="std_msgs"/>
+  <depend package="dynamixel_controllers"/>
+  <depend package="dynamixel_driver"/>
+  <depend package="dynamixel_msgs"/>
+  <depend package="pcl"/>
+  <depend package="roscpp"/>
+  <depend package="rospy"/>
+  <depend package="beginner_tutorials"/>
+
+</package>
+
+

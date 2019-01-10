@@ -1,0 +1,142 @@
+#include "ros/ros.h"
+#include "std_msgs/String.h"
+#include "sensor_msgs/PointCloud2.h"
+#include <pcl/ros/conversions.h>
+#include <pcl/point_cloud.h>
+#include <pcl/point_types.h>
+#include <dynamixel_msgs/JointState.h>
+#include <pcl/common/transforms.h>
+
+#include <sstream>
+#include <math.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#include <malloc.h>
+#include <sys/timeb.h>
+#include <time.h>
+#include <termios.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <netdb.h>
+#include <std_msgs/Float64.h>
+
+#define	pi 3.14159265
+
+dynamixel_msgs::JointState::ConstPtr msg_servo;
+Eigen::Matrix4f transformationMatrix;	
+pcl::PointCloud<pcl::PointXYZ> cloud_points;
+
+float ang_servo;	
+
+using namespace std;
+
+void sonarCallback(const sensor_msgs::PointCloud2::ConstPtr& msg);
+void servoCallback(const dynamixel_msgs::JointState::ConstPtr& msg);
+
+sensor_msgs::PointCloud2 receive(){
+
+	sensor_msgs::PointCloud2 cloud;
+	pcl::PointCloud<pcl::PointXYZ>::Ptr rotatedCloud (new pcl::PointCloud<pcl::PointXYZ>);
+       
+        pcl::transformPointCloud(cloud_points,*rotatedCloud,transformationMatrix);
+
+	pcl::toROSMsg(*rotatedCloud, cloud);			//converter a nova cloud 3D para pcl2 (output)
+	
+	return cloud;
+}
+
+ 
+void sonarCallback(const sensor_msgs::PointCloud2ConstPtr& msg)
+{
+	//cloud_sonar=msg;
+	pcl::fromROSMsg(*msg, cloud_points);    		//converter a cloud pcl2 lida do sonar para pcl(x,y,z)
+	
+}
+
+void servoCallback(const dynamixel_msgs::JointState::ConstPtr& msg)
+{
+	msg_servo=msg;
+	/*msg_servo.current_pos= msg->current_pos;
+	msg_servo.goal_pos= msg->goal_pos;
+	msg_servo.velocity= msg->velocity;
+	msg_servo.is_moving= msg->is_moving;*/
+	ang_servo = (msg_servo->current_pos)*(180/pi);		    //graus=rads*180/pi
+  	
+	//matriz de rotacao em torno do eixo Z
+
+			transformationMatrix <<
+                		cos(msg_servo->current_pos),  -sin(msg_servo->current_pos), 0, 0,
+                		sin(msg_servo->current_pos),   cos(msg_servo->current_pos), 0, 0,
+                             		     0,                0, 1, 0,
+		      			     0,                0, 0, 1;
+}
+
+
+
+int  kbhit  (void)  {
+	  struct termios oldt, newt;
+	  int ch;
+	  int oldf;
+
+	  tcgetattr(STDIN_FILENO, &oldt);
+	  newt = oldt;
+	  newt.c_lflag &= ~(ICANON | ECHO);
+	  tcsetattr(STDIN_FILENO, TCSANOW, &newt);
+	  oldf = fcntl(STDIN_FILENO, F_GETFL, 0);
+	  fcntl(STDIN_FILENO, F_SETFL, oldf | O_NONBLOCK);
+
+	  ch = getchar();
+
+	  tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
+	  fcntl(STDIN_FILENO, F_SETFL, oldf);
+
+	  if(ch != EOF)
+	  {
+	    ungetc(ch, stdin);
+	    return 1;
+	  }
+
+	  return 0;
+
+}  
+
+
+int main(int argc, char **argv)
+{
+  
+  	ros::init(argc, argv, "FinalImage");
+    	ros::NodeHandle nh;
+ 	ros::Subscriber sub_sonar = nh.subscribe("cloud_test", 1000, sonarCallback);   //recebe a cloud vinda do sonar
+	ros::Subscriber sub_servo = nh.subscribe("/tilt_controller/state", 1, servoCallback);   //recebe os dados do servo
+	ros::Publisher Final_Image_pub = nh.advertise<sensor_msgs::PointCloud2>("Img_final", 1000);  //publica a cloud 3D
+	ros::Rate loop_rate(10);
+
+  	sensor_msgs::PointCloud2 msg;
+
+	int num_scans;
+
+	printf("\nPress any key to shutdown publishing of 3D Image");
+		
+	while(!kbhit() && ros::ok()){
+
+		printf("\n Angulo Servo (º): %f", ang_servo);
+
+		msg=receive();
+		
+		msg.header.stamp=ros::Time::now();
+		msg.header.frame_id="system3D";
+		
+		Final_Image_pub.publish(msg);  
+		
+		ros::spinOnce();
+    		loop_rate.sleep();
+		num_scans++;
+	}
+
+	return 0;
+}

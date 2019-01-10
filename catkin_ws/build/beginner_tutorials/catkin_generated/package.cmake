@@ -1,0 +1,7 @@
+set(_CATKIN_CURRENT_PACKAGE "beginner_tutorials")
+set(beginner_tutorials_MAINTAINER "Pedro Salgado <salgadobb@hotmail.com>")
+set(beginner_tutorials_DEPRECATED "")
+set(beginner_tutorials_VERSION "0.0.0")
+set(beginner_tutorials_BUILD_DEPENDS "pcl_ros" "roscpp" "rospy" "std_msgs")
+set(beginner_tutorials_RUN_DEPENDS "pcl_ros" "roscpp" "rospy" "std_msgs")
+set(beginner_tutorials_BUILDTOOL_DEPENDS "catkin")

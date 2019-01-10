@@ -1,0 +1,13 @@
+-actualizar path (por cada terminal):
+
+source ~/catkin_ws/devel/setup.bash
+
+
+-dynamixel
+
+lauchers:
+roslaunch my_dynamixel_tutorial controller_manager.launch
+roslaunch my_dynamixel_tutorial start_tilt_controller.launch
+
+para funcionar tive de add a minha conta ao grupo dialout para ter acesso ao serial device ttyUSB0: sudo adduser salgado dialout
+assim como mudar as permissoes usb para a UART: dev/ttyUSB0 com read + right permissions: sudo chmod 666 /dev/ttyUSB0

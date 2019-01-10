@@ -1,0 +1,17 @@
+/home/salgado/fuerte_workspace/sandbox/system3D/build/CMakeFiles/ROSBUILD_genmsg_cpp.dir
+/home/salgado/fuerte_workspace/sandbox/system3D/build/CMakeFiles/ROSBUILD_genmsg_lisp.dir
+/home/salgado/fuerte_workspace/sandbox/system3D/build/CMakeFiles/ROSBUILD_gensrv_cpp.dir
+/home/salgado/fuerte_workspace/sandbox/system3D/build/CMakeFiles/ROSBUILD_gensrv_lisp.dir
+/home/salgado/fuerte_workspace/sandbox/system3D/build/CMakeFiles/clean-test-results.dir
+/home/salgado/fuerte_workspace/sandbox/system3D/build/CMakeFiles/img3D.dir
+/home/salgado/fuerte_workspace/sandbox/system3D/build/CMakeFiles/rosbuild_precompile.dir
+/home/salgado/fuerte_workspace/sandbox/system3D/build/CMakeFiles/rosbuild_premsgsrvgen.dir
+/home/salgado/fuerte_workspace/sandbox/system3D/build/CMakeFiles/rospack_genmsg.dir
+/home/salgado/fuerte_workspace/sandbox/system3D/build/CMakeFiles/rospack_genmsg_libexe.dir
+/home/salgado/fuerte_workspace/sandbox/system3D/build/CMakeFiles/rospack_gensrv.dir
+/home/salgado/fuerte_workspace/sandbox/system3D/build/CMakeFiles/test.dir
+/home/salgado/fuerte_workspace/sandbox/system3D/build/CMakeFiles/test-future.dir
+/home/salgado/fuerte_workspace/sandbox/system3D/build/CMakeFiles/test-results.dir
+/home/salgado/fuerte_workspace/sandbox/system3D/build/CMakeFiles/test-results-run.dir
+/home/salgado/fuerte_workspace/sandbox/system3D/build/CMakeFiles/testfinal.dir
+/home/salgado/fuerte_workspace/sandbox/system3D/build/CMakeFiles/tests.dir

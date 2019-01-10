@@ -1,0 +1,17 @@
+<package>
+  <description brief="sonar_servo_tf">
+
+     sonar_servo_tf
+
+  </description>
+  <author>Salgado</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/sonar_servo_tf</url>
+  <depend package="tf"/>
+  <depend package="roscpp"/>
+  <depend package="rospy"/>
+
+</package>
+
+

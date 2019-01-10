@@ -1,0 +1,8 @@
+prefix=/home/salgado/catkin_ws/devel
+
+Name: system3d
+Description: Description of system3d
+Version: 0.0.0
+Cflags: 
+Libs: -L/home/salgado/catkin_ws/devel/lib 
+Requires: 

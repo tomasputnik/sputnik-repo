@@ -1,0 +1,112 @@
+#include "ros/ros.h"
+#include <pcl/point_cloud.h>
+#include <pcl/point_types.h>
+#include "std_msgs/String.h"
+#include "sensor_msgs/PointCloud2.h"
+#include <pcl/conversions.h>
+#include <pcl_conversions/pcl_conversions.h>
+#include <stdio.h>      
+#include <stdlib.h>     /* srand, rand */
+#include <time.h>       /* time */
+
+#include <sstream>
+#include <math.h>
+#include <string.h>
+#include <malloc.h>
+#include <sys/timeb.h>
+#include <time.h>
+#include <termios.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <netdb.h>
+
+
+int  kbhit  (void)  {
+	  struct termios oldt, newt;
+	  int ch;
+	  int oldf;
+
+	  tcgetattr(STDIN_FILENO, &oldt);
+	  newt = oldt;
+	  newt.c_lflag &= ~(ICANON | ECHO);
+	  tcsetattr(STDIN_FILENO, TCSANOW, &newt);
+	  oldf = fcntl(STDIN_FILENO, F_GETFL, 0);
+	  fcntl(STDIN_FILENO, F_SETFL, oldf | O_NONBLOCK);
+
+	  ch = getchar();
+
+	  tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
+	  fcntl(STDIN_FILENO, F_SETFL, oldf);
+
+	  if(ch != EOF)
+	  {
+	    ungetc(ch, stdin);
+	    return 1;
+	  }
+
+	  return 0;
+
+}  
+
+int main(int argc, char **argv)
+{
+  
+  	ros::init(argc, argv, "tester");
+    	ros::NodeHandle nh;
+ 	ros::Publisher test_pub = nh.advertise<sensor_msgs::PointCloud2>("cloud_test", 1000);
+
+  	sensor_msgs::PointCloud2 msg;
+
+	//pcl::PointCloud<pcl::PointXYZ> temp_data_cloud;
+	pcl::PointXYZ test_points;
+	//test_points.z = 0;
+
+	int i;
+	
+	printf("Press any key to shutdown test\n");
+
+	/* initialize random seed: */
+	srand (time(NULL));
+	
+	while(!kbhit()){
+
+		pcl::PointCloud<pcl::PointXYZ>::Ptr temp_data_cloud(new pcl::PointCloud<pcl::PointXYZ>);
+
+		for (i=0; i<101; i++){
+			
+			int dice_roll = rand()%2;  
+			//int dice_roll2 = rand()%1; 
+			test_points.x = i;
+			test_points.z = -100-dice_roll;
+			temp_data_cloud->points.push_back(test_points);
+		}
+
+		for (i=0; i<101; i++){
+			
+			int dice_roll = rand()%2;  
+			//int dice_roll2 = rand()%1; 
+			test_points.z = -i;
+			test_points.x = 100+dice_roll;
+			temp_data_cloud->points.push_back(test_points);
+		}
+
+		pcl::toROSMsg(*temp_data_cloud, msg);
+		
+		msg.header.stamp=ros::Time::now();
+		msg.header.frame_id="system3D";
+		ros::Rate loop_rate(10);
+		
+		test_pub.publish(msg);  
+		//ros::spin();
+		
+		ros::spinOnce();
+    		loop_rate.sleep();
+	}
+
+  return 0;
+}
+
